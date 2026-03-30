@@ -1,0 +1,95 @@
+
+{
+  "university_identity": {
+    "full_name": "National University of Sciences and Technology (NUST)",
+    "established": "March 1991",
+    "status": "Federal university chartered by the Government of Pakistan and recognized by the HEC",
+    "main_campus": "Sector H-12, Islamabad, Pakistan",
+    "other_locations": ["Rawalpindi", "Quetta (NBC)", "Karachi (PNEC)"]
+  },
+  "detailed_institutions": {
+    "engineering_and_it": [
+      {"acronym": "SEECS", "name": "School of Electrical Engineering and Computer Science"},
+      {"acronym": "SCEE", "name": "School of Civil and Environmental Engineering"},
+      {"acronym": "SCME", "name": "School of Chemical and Materials Engineering"},
+      {"acronym": "SMME", "name": "School of Mechanical and Manufacturing Engineering"},
+      {"acronym": "CAE", "name": "College of Aeronautical Engineering"},
+      {"acronym": "CEME", "name": "College of Electrical and Mechanical Engineering"},
+      {"acronym": "MCE", "name": "Military College of Engineering"},
+      {"acronym": "MCS", "name": "Military College of Signals"},
+      {"acronym": "PNEC", "name": "Pakistan Navy Engineering College"},
+      {"acronym": "NBC", "name": "NUST Balochistan Campus"}
+    ],
+    "business_and_social_sciences": [
+      {"acronym": "NBS", "name": "NUST Business School"},
+      {"acronym": "SADA", "name": "School of Art, Design and Architecture"},
+      {"acronym": "S3H", "name": "School of Social Sciences and Humanities"},
+      {"acronym": "NLS", "name": "NUST Law School (LLB)"},
+      {"acronym": "JSPPL", "name": "Jinnah School of Public Policy and Leadership"}
+    ],
+    "health_and_life_sciences": [
+      {"acronym": "NSHS", "name": "NUST School of Health Sciences (MBBS & BSHND)"},
+      {"acronym": "ASAB", "name": "Atta-ur-Rahman School of Applied Biosciences"},
+      {"acronym": "SNS", "name": "School of Natural Sciences"}
+    ]
+  },
+  "admission_pathways": {
+    "nust_entry_test_net": {
+      "format": "200 MCQs, 3 hours duration, no negative marking",
+      "delivery": "Computer-based (Islamabad) or Paper-based (Karachi, Quetta, Gilgit)",
+      "series": "Conducted in multiple series; candidates can update preferences between series",
+      "rechecking": "Available for paper-based test within 5 days (Fee: Rs 500)"
+    },
+    "standardized_tests": {
+      "act_code": "2915",
+      "sat_code": "2790",
+      "validity": "2 years",
+      "deadline": "Scores must reach NUST by 25 July 2025",
+      "categories": "National and International seats available"
+    }
+  },
+  "eligibility_nuances": {
+    "general_rule": "Minimum 60% marks in SSC and HSSC/Equivalent",
+    "ics_candidates": "Eligible for Engineering but must take remedial Chemistry in 1st semester",
+    "pre_medical_candidates": [
+      "Eligible for Engineering if they pass additional Mathematics",
+      "Eligible for BS CS if they pass 6 credit hours of deficient Math within one year"
+    ],
+    "dae_candidates": "Minimum 60% in Matric and DAE; limited to specific PEC-approved programs",
+    "non_fsc_equivalence": "IBCC Equivalence certificate is mandatory; O/A-level grade sheets are not enough"
+  },
+  "financial_details": {
+    "processing_fees": {
+      "national_dual_nationals": "Rs 5,000 (USD 40) per NET or ACT/SAT application",
+      "foreign_nationals": "Rs 10,000 (USD 80) per NET or ACT/SAT application",
+      "exemptions": "1st, 2nd, and 3rd position holders in BISE HSSC exams"
+    },
+    "payment_methods": ["1Link (1Bill Invoice)", "Credit Card", "Mobile Wallets (EasyPaisa/JazzCash)"],
+    "mbbs_installments": {
+      "quarterly": "0% discount",
+      "six_monthly": "2% discount",
+      "annually": "4% discount"
+    },
+    "scholarships": [
+      "NFAAF (Need-Based Financial Aid)",
+      "PEEF (Punjab Educational Endowment Fund)",
+      "Chief Minister’s Honhaar Scholarship",
+      "Ihsan Trust Interest-Free Loans"
+    ]
+  },
+  "campus_life_and_services": {
+    "hostels": "Available for male and female students at H-12 campus, including MBBS",
+    "transport": "Pick-and-drop for Rawalpindi/Islamabad on specified routes for a fee",
+    "orientation": "Mandatory session for new students to learn about facilities and rules",
+    "medical_support": "MBBS students follow standard NUST housing and dining procedures"
+  },
+  "step_by_step_application": [
+    "1. Create account at ugadmissions.nust.edu.pk",
+    "2. Complete online registration (CNIC/Form B/NICOP required)",
+    "3. Pay processing fee via 1Link or Credit Card",
+    "4. Download admit card and appear for NET",
+    "5. Check results online (24 hours for computer-based, 5-7 days for paper)",
+    "6. Monitor merit list and selection notifications",
+    "7. Verify documents and pay admission fees to confirm seat"
+  ]
+}

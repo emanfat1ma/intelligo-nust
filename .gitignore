@@ -1,0 +1,26 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+venv/
+env/
+.env
+
+# Database & Storage
+*.db
+*.sqlite3
+chroma/
+storage/
+db/              <-- Added this for your ChromaDB folder
+
+# Large Model Files
+*.bin
+*.onnx
+*.weights
+*.gguf           <-- Added this for your Phi-3/Llama models
+
+# Operating System Files
+.DS_Store
+Thumbs.db

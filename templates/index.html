@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NUST Admission AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050912;
+            --card: #0b1426;
+            --card-border: #162240;
+            --text: #dde6f5;
+            --text-muted: #4a6690;
+            --accent: #3a6fd8;
+            --accent-glow: rgba(58,111,216,.2);
+            --user-msg: #192f5f;
+            --chip-bg: #0d1a35;
+            --chip-border: #1d3260;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* SPLASH SCREEN */
+        #splash {
+            position: fixed; inset: 0; z-index: 100; background: var(--bg);
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
+            transition: opacity 0.6s ease;
+        }
+
+        .splash-logo {
+            font-family: 'Syne', sans-serif; font-weight: 800; font-size: 2.4rem; color: var(--text);
+            opacity: 0; animation: fadeUp 0.7s ease 0.4s forwards;
+        }
+        .splash-logo span { color: var(--accent); }
+        .splash-sub { font-size: 0.78rem; text-transform: uppercase; color: var(--text-muted); opacity: 0; animation: fadeUp 0.7s ease 0.75s forwards; }
+        .splash-bar-wrap { margin-top: 32px; width: 140px; height: 2px; background: #1a2a4a; opacity: 0; animation: fadeUp 0.5s ease 1s forwards; }
+        .splash-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), #5b9bff); animation: loadBar 1.5s ease 1.1s forwards; }
+        
+        @keyframes loadBar { to { width: 100%; } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* AMBIENT ORBS */
+        .orb { position: fixed; border-radius: 50%; pointer-events: none; z-index: 0; filter: blur(90px); }
+        .orb-a { width: 500px; height: 500px; top: -180px; left: -120px; background: radial-gradient(circle, #0d2d8a44, transparent 70%); }
+        .orb-b { width: 400px; height: 400px; bottom: -100px; right: -80px; background: radial-gradient(circle, #0a3a7033, transparent 70%); }
+
+        /* HEADER */
+        #header {
+            position: relative; z-index: 10; display: flex; align-items: center; justify-content: space-between;
+            padding: 14px 22px; border-bottom: 1px solid var(--card-border); background: rgba(5,9,18,.88); backdrop-filter: blur(24px);
+        }
+        .header-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.97rem; display: flex; align-items: center; gap: 8px; }
+        .logo-dot { width: 7px; height: 7px; border-radius: 2px; background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+        .status-pill { display: flex; align-items: center; gap: 6px; font-size: 0.67rem; color: var(--text-muted); padding: 5px 11px; border: 1px solid var(--card-border); border-radius: 20px; background: var(--card); }
+        .status-dot { width: 5px; height: 5px; border-radius: 50%; background: #22d3ee; box-shadow: 0 0 5px #22d3ee; animation: blink 2s infinite; }
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+        /* CHAT BOX */
+        #chat-box {
+            flex: 1; overflow-y: auto; padding: 1.4rem 1.2rem 0.6rem; display: flex; flex-direction: column;
+            position: relative; z-index: 1; scroll-behavior: smooth;
+        }
+        #chat-box::-webkit-scrollbar { width: 3px; }
+        #chat-box::-webkit-scrollbar-thumb { background: var(--card-border); border-radius: 3px; }
+
+        /* MESSAGES */
+        .msg { margin-bottom: 1rem; padding: 11px 15px; border-radius: 18px; max-width: 80%; line-height: 1.6; font-size: 0.875rem; animation: msgIn 0.28s ease forwards; }
+        .msg ul, .msg ol { margin-left: 20px; padding-top: 5px; }
+        .msg p { margin-bottom: 8px; }
+        .msg.bot {
+    transform: translateY(10px);
+    opacity: 0;
+    animation: quickIn 0.2s ease-out forwards;
+}
+
+@keyframes quickIn {
+    to { 
+        transform: translateY(0);
+        opacity: 1; 
+    }
+}
+        @keyframes msgIn { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .user { align-self: flex-end; background: var(--user-msg); border: 1px solid #243d78; border-bottom-right-radius: 5px; }
+        .bot { align-self: flex-start; background: var(--card); border: 1px solid var(--card-border); border-bottom-left-radius: 5px; }
+        .bot-wrap { display: flex; flex-direction: column; align-items: flex-start; margin-bottom: 1rem; opacity: 0; animation: fadeIn 0.4s ease forwards; }
+        .bot-label { font-size: 0.58rem; text-transform: uppercase; color: var(--text-muted); font-family: 'Syne', sans-serif; font-weight: 600; margin-bottom: 4px; padding-left: 3px; }
+
+        @keyframes fadeIn { to { opacity: 1; } }
+
+        /* TYPING INDICATOR */
+        #typing-indicator { 
+            display: none; 
+            opacity: 0; 
+            transition: opacity 0.2s ease; 
+            align-self: flex-start; 
+            padding: 10px 14px; 
+            gap: 5px; 
+            background: var(--card); 
+            border: 1px solid var(--card-border); 
+            border-radius: 18px; 
+            border-bottom-left-radius: 5px; 
+            margin-bottom: 1rem; 
+            order: 999;
+        }
+        #typing-indicator.visible { display: flex; opacity: 1; }
+        .t-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); animation: bounce 1.1s infinite; }
+        .t-dot:nth-child(2) { animation-delay: .18s; } .t-dot:nth-child(3) { animation-delay: .36s; }
+        @keyframes bounce { 0%,100% { transform:translateY(0); opacity:.35; } 50% { transform:translateY(-5px); opacity:1; } }
+
+        /* CHIPS */
+        #chip-area { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 1.2rem 0.9rem; position: relative; z-index: 1; }
+        .chip { padding: 6px 12px; border-radius: 20px; border: 1px solid var(--chip-border); background: var(--chip-bg); color: var(--text-muted); font-size: 0.72rem; cursor: pointer; transition: .2s; }
+        .chip:hover { border-color: var(--accent); color: var(--text); background: #0f1f42; }
+
+        /* INPUT AREA */
+        #input-area { padding: 12px 14px 15px; background: rgba(5,9,18,.92); backdrop-filter: blur(24px); border-top: 1px solid var(--card-border); }
+        .input-row { display: flex; align-items: center; background: var(--card); border: 1px solid var(--card-border); border-radius: 14px; }
+        input { flex: 1; padding: 12px 15px; border: none; background: transparent; color: var(--text); outline: none; font-size: 0.875rem; }
+        #send-btn { width: 36px; height: 36px; margin: 5px; border-radius: 9px; border: none; background: var(--accent); color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        #send-btn svg { width: 16px; height: 16px; }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+
+    <div class="orb orb-a"></div>
+    <div class="orb orb-b"></div>
+
+    <div id="splash">
+        <div class="splash-logo"><span>NUST</span> Admission AI</div>
+        <div class="splash-sub">Powered by artificial intelligence</div>
+        <div class="splash-bar-wrap"><div class="splash-bar"></div></div>
+    </div>
+
+    <div id="header">
+        <div class="header-logo"><div class="logo-dot"></div>NUST <span style="color:var(--text-muted);font-weight:300;margin-left:3px">/ Admission AI</span></div>
+        <div id="status-container" class="status-pill"><div class="status-dot"></div>Online</div>
+    </div>
+
+    <div id="chat-box">
+        <div class="bot-wrap">
+            <div class="bot-label">NUST AI</div>
+            <div class="msg bot">Welcome to the NUST Admission Portal. How can I assist you today?</div>
+        </div>
+        <div id="typing-indicator">
+            <div class="t-dot"></div><div class="t-dot"></div><div class="t-dot"></div>
+        </div>
+    </div>
+
+    <div id="chip-area">
+        <button class="chip" onclick="chipSend('How do I apply to NUST?')">How to Apply</button>
+        <button class="chip" onclick="chipSend('What are the admission deadlines for 2026?')">Deadlines</button>
+        <button class="chip" onclick="chipSend('What engineering programs are offered?')">Programs</button>
+        <button class="chip" onclick="chipSend('What is the fee structure?')">Fee Structure</button>
+    </div>
+
+    <div id="input-area">
+        <div class="input-row">
+            <input type="text" id="user-input" placeholder="Ask about admissions..." autocomplete="off">
+            <button id="send-btn" onclick="sendMessage()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const input = document.getElementById('user-input');
+        const box = document.getElementById('chat-box');
+        const typing = document.getElementById('typing-indicator');
+        const socket = new WebSocket('ws://' + window.location.host + '/ws');
+
+        // Splash Logic
+        setTimeout(() => {
+            const splash = document.getElementById('splash');
+            splash.style.opacity = '0';
+            setTimeout(() => splash.style.display = 'none', 600);
+        }, 3000);
+
+        socket.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            if (data.type === "full_text") {
+                typing.classList.remove('visible'); 
+                appendMessage("bot", data.content);
+            }
+        };
+
+        socket.onclose = function(e) {
+            console.log("Socket closed.");
+            document.getElementById('status-container').innerHTML = '<div class="status-dot" style="background:#ff4b4b;box-shadow:none"></div>Offline';
+        };
+
+        function sendMessage() {
+            const text = input.value.trim();
+            if (!text) return;
+            
+            appendMessage("user", text);
+            input.value = "";
+
+            // Move loader to the very bottom so it's always below the user's latest question
+            box.appendChild(typing); 
+            typing.classList.add('visible'); 
+            
+            box.scrollTop = box.scrollHeight;
+            socket.send(JSON.stringify({message: text}));
+        }
+
+        function appendMessage(role, text) {
+            if (role === "user") {
+                const div = document.createElement('div');
+                div.className = "msg user";
+                div.innerText = text;
+                box.appendChild(div);
+            } else {
+                const wrap = document.createElement('div');
+                wrap.className = "bot-wrap";
+                wrap.innerHTML = `<div class="bot-label">NUST AI</div><div class="msg bot">${marked.parse(text)}</div>`;
+                box.appendChild(wrap);
+            }
+            box.scrollTop = box.scrollHeight;
+        }
+
+        function chipSend(text) { input.value = text; sendMessage(); }
+        input.addEventListener('keypress', e => { if (e.key === 'Enter') sendMessage(); });
+    </script>
+</body>
+</html>
